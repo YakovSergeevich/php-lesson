@@ -17,4 +17,5 @@ RUN apt-get install -y \
         && docker-php-ext-configure zip \
         && docker-php-ext-install zip
 
+
 WORKDIR /symfony
