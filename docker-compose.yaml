@@ -1,1 +1,25 @@
-version: 3
+version: '3.8'
+services:
+  lesson-php-fpm:
+    restart: on-failure
+    build:
+      context: ./docker
+      dockerfile: php-fpm.docker
+    volumes:
+      - './symfony/:/var/www/lesson-symfony'
+
+  lesson-nginx:
+    restart: on-failure
+    build:
+      context: ./docker
+      dockerfile: nginx.docker
+    volumes:
+      - './symfony/public/:/var/www/lesson-symfony'
+      - './docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro'
+    depends_on:
+      - lesson-php-fpm
+    ports:
+      - 80:80
+
+
+
