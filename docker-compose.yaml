@@ -4,7 +4,7 @@ services:
   lesson-postgres:
     image: postgres:12.4-alpine
     container_name: lesson-postgres
-#    restart: on-failure
+    restart: on-failure
     ports:
       - 5432:5432
     volumes:
