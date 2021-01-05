@@ -1,10 +1,22 @@
 <?php
 
-$db = new PDO('pgsql:dbname=test;host=lesson-postgres', 'yakov', 123);
-$query = "SELECT table_name FROM information_schema.tables WHERE table_schema='public'";
-$statement = $db->prepare($query);
-$bool = $statement->execute();
-$result = $statement->fetchAll(2);
-echo '<pre>';
-print_r($result);
-echo '<pre>';
+use App\Kernel;
+use Symfony\Component\Dotenv\Dotenv;
+use Symfony\Component\ErrorHandler\Debug;
+use Symfony\Component\HttpFoundation\Request;
+
+require dirname(__DIR__).'/vendor/autoload.php';
+
+(new Dotenv())->bootEnv(dirname(__DIR__).'/.env');
+
+if ($_SERVER['APP_DEBUG']) {
+    umask(0000);
+
+    Debug::enable();
+}
+
+$kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
+$request = Request::createFromGlobals();
+$response = $kernel->handle($request);
+$response->send();
+$kernel->terminate($request, $response);
