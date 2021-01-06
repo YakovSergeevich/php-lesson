@@ -2,6 +2,8 @@
 
 namespace App\Command;
 
+use App\Repository\ProductRepository;
+use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -13,6 +15,27 @@ use Symfony\Component\Finder\Finder;
 class UploadFileCommand extends Command
 {
     protected static $defaultName = 'app:upload-file';
+
+
+
+    /**
+     * @var ProductRepository
+     */
+    private ProductRepository $productRepository;
+
+
+    /**
+     * UploadFileCommand constructor.
+     * @param ProductRepository $productRepository
+     */
+    public function __construct(ProductRepository $productRepository)
+    {
+
+        parent::__construct();
+        $this->productRepository = $productRepository;
+    }
+
+
 
 
 
@@ -70,8 +93,8 @@ class UploadFileCommand extends Command
 
         }
         array_shift($result);
-        dump($result);exit;
-//        $this->productRepository->addArray($result);
+//        dump($result);exit;
+        $this->productRepository->addArray($result);
 
 
 //        $io = new SymfonyStyle($input, $output);
