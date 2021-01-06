@@ -26,6 +26,7 @@ services:
     links:
       - lesson-postgres
 
+
   lesson-nginx:
     restart: on-failure
     container_name: lesson-nginx
