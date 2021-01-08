@@ -9,7 +9,8 @@ fos_elastica:
                 driver: orm
                 model: App\Entity\Product
                 provider: ~
+                listener: ~
                 finder: ~
             properties:
-                description: ~
                 name: ~
+                description: ~
