@@ -12,7 +12,7 @@ class HelloService
     /**
      * @param array $data
      */
-    public function send(array $data): void
+    public function send(array $data)
     {
         $this->producer->send(HelloSendConsumer::QUEUE_NAME, $data);
     }

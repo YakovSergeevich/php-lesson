@@ -45,7 +45,6 @@ class ProductRepository
             $this->entityManager->persist($product);
         }
         $this->entityManager->flush();
-
         return true;
     }
 

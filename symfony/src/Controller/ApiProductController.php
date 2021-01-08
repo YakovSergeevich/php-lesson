@@ -68,12 +68,13 @@ class ApiProductController extends AbstractController
      *     )
      */
 
-    public function hello($name)
+    public function hello($name): JsonResponse
     {
 
         $array = [];
         $array['message'] = $name;
         $this->helloService->send($array);
+        return $this->json(['status' => 'ok']);
 
     }
 

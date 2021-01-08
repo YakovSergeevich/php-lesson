@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Repository\ProductRepository;
+use App\Service\HelloService;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -16,28 +17,22 @@ class UploadFileCommand extends Command
 {
     protected static $defaultName = 'app:upload-file';
 
-
-
     /**
-     * @var ProductRepository
+     * @var HelloService
      */
-    private ProductRepository $productRepository;
-
+    private HelloService $helloService;
 
     /**
      * UploadFileCommand constructor.
-     * @param ProductRepository $productRepository
+     * @param HelloService $helloService
      */
-    public function __construct(ProductRepository $productRepository)
+    public function __construct(HelloService $helloService)
     {
 
         parent::__construct();
-        $this->productRepository = $productRepository;
+
+        $this->helloService = $helloService;
     }
-
-
-
-
 
     protected function configure()
     {
@@ -62,14 +57,6 @@ class UploadFileCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $finder = new Finder();
-//       $files = $finder->files()->name('*.txt')->in(__DIR__ . '/../../public/uploads/catalog.txt');
-//        dump($finder);exit;
-////        $homepage = file_put_contents('file.txt', file_get_contents('https://drive.google.com/file/d/1dYlR7DIObdQLO54EqL65OZ-ywJQCPgJL/view'));
-//          $files = realpath(dirname(dirname(__DIR__ )) . '/public') ;
-//          dump($files . '/uploads/catalog.txt');exit;
-//       $i = file_get_contents($files, true);
-//          dump($i);exit;
-//
         $files = $finder->files()->in('public/uploads')->name('catalog.txt');
 
         $result = '';
@@ -79,8 +66,6 @@ class UploadFileCommand extends Command
         }
         $f = file_get_contents($result);
         $f = $this->clearData($f);
-//        $f = explode('|', $f);
-//        dump($f);exit;
         $f = preg_replace('/([0-9)]){6}/', PHP_EOL . '$0', $f);
         $f = explode(PHP_EOL, $f);
         $arrays = [];
@@ -93,23 +78,7 @@ class UploadFileCommand extends Command
 
         }
         array_shift($result);
-//        dump($result);exit;
-        $this->productRepository->addArray($result);
-
-
-//        $io = new SymfonyStyle($input, $output);
-//        $arg1 = $input->getArgument('arg1');
-//
-//        if ($arg1) {
-//            $io->note(sprintf('You passed an argument: %s', $arg1));
-//        }
-//
-//        if ($input->getOption('option1')) {
-//            // ...
-//        }
-//
-//        $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
-
+        $this->helloService->send($result);
         return Command::SUCCESS;
     }
 }
