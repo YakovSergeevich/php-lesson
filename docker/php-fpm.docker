@@ -5,7 +5,7 @@ WORKDIR /var/www/lesson-symfony
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/install-php-extensions && sync && \
-    install-php-extensions rdkafka zookeeper
+    install-php-extensions rdkafka zookeeper pcntl
 
 
 RUN apt-get update

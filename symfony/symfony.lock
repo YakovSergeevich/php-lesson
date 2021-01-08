@@ -114,6 +114,9 @@
     "laminas/laminas-zendframework-bridge": {
         "version": "1.1.1"
     },
+    "mgid/kafka-bundle": {
+        "version": "1.0.0"
+    },
     "monolog/monolog": {
         "version": "2.2.0"
     },

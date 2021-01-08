@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4a2bcffb43630f5db2d991c988c244ae",
+    "content-hash": "b1d7c82b7084e8292bb8d259194af42d",
     "packages": [
         {
             "name": "composer/package-versions-deprecated",
@@ -2024,6 +2024,73 @@
                 }
             ],
             "time": "2020-09-14T14:23:00+00:00"
+        },
+        {
+            "name": "mgid/kafka-bundle",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mgid/kafka-bundle.git",
+                "reference": "5b048e540696d8ee9ee03441db39f7786c6a32cf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mgid/kafka-bundle/zipball/5b048e540696d8ee9ee03441db39f7786c6a32cf",
+                "reference": "5b048e540696d8ee9ee03441db39f7786c6a32cf",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "ext-pcntl": "*",
+                "ext-rdkafka": ">=4.0",
+                "php": "^7.4",
+                "psr/log": "^1.1",
+                "symfony/console": "^5.0",
+                "symfony/framework-bundle": "^5.0",
+                "symfony/yaml": "^5.0"
+            },
+            "require-dev": {
+                "kwn/php-rdkafka-stubs": "^2.0",
+                "phpstan/phpstan": "^0.12",
+                "phpunit/php-code-coverage": "^9.2",
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Mgid\\KafkaBundle\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dmitry Khaperets",
+                    "email": "dmitry.khaperets@mgid.com"
+                }
+            ],
+            "description": "Symfony Kafka Bundle",
+            "homepage": "https://github.com/mgid/kafka-bundle",
+            "keywords": [
+                "bundle",
+                "kafka",
+                "php",
+                "rdkafka",
+                "symfony"
+            ],
+            "support": {
+                "issues": "https://github.com/mgid/kafka-bundle/issues",
+                "source": "https://github.com/mgid/kafka-bundle/tree/1.0.0"
+            },
+            "time": "2020-12-24T16:49:14+00:00"
         },
         {
             "name": "monolog/monolog",
