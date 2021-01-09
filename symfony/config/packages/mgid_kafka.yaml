@@ -6,6 +6,7 @@ mgid_kafka:
       log.connection.close: 'false'
       metadata.broker.list: 'kafka:9092'
       queue.buffering.max.messages: 100000
+      retries: 1
 
   consumers:
     configuration:

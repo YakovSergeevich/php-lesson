@@ -3,7 +3,8 @@
 namespace App\Command;
 
 use App\Repository\ProductRepository;
-use App\Service\HelloService;
+use App\Service\ProductImporter;
+use App\Service\ProductQueueProducer;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -16,69 +17,45 @@ use Symfony\Component\Finder\Finder;
 class UploadFileCommand extends Command
 {
     protected static $defaultName = 'app:upload-file';
-
-    /**
-     * @var HelloService
-     */
-    private HelloService $helloService;
+    private ProductQueueProducer $productQueueProducer;
+    private string $rootPath;
+    private ProductImporter $productImporter;
 
     /**
      * UploadFileCommand constructor.
-     * @param HelloService $helloService
+     * @param ProductQueueProducer $productQueueProducer
+     * @param string $rootPath
+     * @param ProductImporter $productImporter
      */
-    public function __construct(HelloService $helloService)
+    public function __construct(ProductQueueProducer $productQueueProducer, string $rootPath, ProductImporter $productImporter)
     {
-
         parent::__construct();
-
-        $this->helloService = $helloService;
+        $this->productQueueProducer = $productQueueProducer;
+        $this->rootPath = $rootPath;
+        $this->productImporter = $productImporter;
     }
 
     protected function configure()
     {
         $this
-            ->setDescription('Read File');
-//            ->addArgument('arg1', InputArgument::OPTIONAL, 'Argument description')
+            ->setDescription('Read File')
+            ->addArgument('path', InputArgument::REQUIRED, 'Path to file product');
 //            ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
 //        ;
     }
 
-    public function clearData($data)
-    {
-        $string = preg_replace('/([^\pL\pN\pP\pS\pZ])|([\xC2\xA0])/u', ' ', $data);
-        $string = preg_replace('# {2,}#', ' ', trim(strip_tags(html_entity_decode($string))));
-        $string = str_replace('-', '.', $string);
-        $i = ['"'];
-        $k = [''];
-        $string = str_replace($i, $k, trim($string));
-        return $string;
-    }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $finder = new Finder();
-        $files = $finder->files()->in('public/uploads')->name('catalog.txt');
+        $path = $this->rootPath . DIRECTORY_SEPARATOR . ltrim($input->getArgument('path'), DIRECTORY_SEPARATOR);
+        foreach ($this->productImporter->import($path) as $productDTO) {
 
-        $result = '';
-        foreach ($files as $key => $file) {
-
-            $result = $file->getRealPath();
-        }
-        $f = file_get_contents($result);
-        $f = $this->clearData($f);
-        $f = preg_replace('/([0-9)]){6}/', PHP_EOL . '$0', $f);
-        $f = explode(PHP_EOL, $f);
-        $arrays = [];
-        foreach ($f as $k => $v) {
-            $arrays[$k] = $v;
-        }
-        $result = [];
-        foreach ($arrays as $k => $v) {
-            $result[$k] = explode('|', trim($v, '|'));
+            $this->productQueueProducer->createProduct($productDTO);
+            $output->writeln(sprintf('Product parsed: %s', json_encode($productDTO)));
 
         }
-        array_shift($result);
-        $this->helloService->send($result);
+        $output->writeln('Success');
+
         return Command::SUCCESS;
     }
 }

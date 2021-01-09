@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Command;
+namespace App\Consumer;
 
 
 use App\Repository\ProductRepository;
 use Mgid\KafkaBundle\Command\Consumer;
 
-class HelloSendConsumer extends Consumer
+class ProductCreateConsumer extends Consumer
 {
-    public const QUEUE_NAME = 'hello_send_greeting';
+    public const QUEUE_NAME = 'product_create_queue';
     /**
      * @var ProductRepository
      */
@@ -20,9 +20,12 @@ class HelloSendConsumer extends Consumer
         $this->repo = $productRepository;
     }
 
-    protected function onMessage(array $data): void
+    public function onMessage(array $data): void
     {
 
-        $this->repo->addArray($data);
+        $dto = unserialize($data[0]);
+        $product = $this->repo->createOrUpdate($dto);
+
+        print_r($product);
     }
 }

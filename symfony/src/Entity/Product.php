@@ -94,6 +94,7 @@ class Product implements \JsonSerializable
         return new self ($name, $product_sku, $price, $description, $category);
     }
 
+
     /**
      * @param string $name
      * @param string $product_sku
@@ -101,7 +102,7 @@ class Product implements \JsonSerializable
      * @param string $description
      * @param int $category
      */
-    public function edit(string $name, string $product_sku, float $price, string $description, int $category): void
+    public function update(string $name, string $product_sku, float $price, string $description, int $category): void
     {
         $this->name = $name;
         $this->sku = $product_sku;

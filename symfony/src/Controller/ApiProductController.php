@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\ProductRepository;
-use App\Service\HelloService;
+use App\Service\ProductQueueProducer;
 use Elastica\Response;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,15 +25,15 @@ class ApiProductController extends AbstractController
      */
     private PaginatedFinderInterface $finder;
     /**
-     * @var HelloService
+     * @var ProductQueueProducer
      */
-    private HelloService $helloService;
+    private ProductQueueProducer $helloService;
 
     public function __construct
     (
         PaginatedFinderInterface $finder,
         ProductRepository $productRepository,
-        HelloService $helloService
+        ProductQueueProducer $helloService
 
     )
     {
@@ -49,7 +49,6 @@ class ApiProductController extends AbstractController
      *     methods={"POST"}
      *     )
      * @param Request $request
-
      * @return JsonResponse
      */
 
@@ -59,24 +58,5 @@ class ApiProductController extends AbstractController
         $results = $this->finder->find($str);
         return $this->json($results);
     }
-
-    /**
-     * @Route(
-     *     "/hello/{name}",
-     *     name="hello",
-     *     methods={"GET"}
-     *     )
-     */
-
-    public function hello($name): JsonResponse
-    {
-
-        $array = [];
-        $array['message'] = $name;
-        $this->helloService->send($array);
-        return $this->json(['status' => 'ok']);
-
-    }
-
 
 }
